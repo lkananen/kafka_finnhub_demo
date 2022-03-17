@@ -1,2 +1,1 @@
-# kafka_haaga
-# twitter
+# Kafka Finnhub demo
