@@ -22,5 +22,9 @@
 - stop processes `docker stop ID`
 
 ## Source
-- https://hub.docker.com/r/bitnami/kafka/
-- https://github.com/bitnami/bitnami-docker-kafka
+- Container link:
+  https://hub.docker.com/r/bitnami/kafka/
+- Container source code:
+  https://github.com/bitnami/bitnami-docker-kafka
+- Kafka topic creation tutorial:
+  http://cloudurable.com/blog/kafka-tutorial-kafka-from-command-line/index.html
