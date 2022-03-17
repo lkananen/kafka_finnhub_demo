@@ -1,7 +1,7 @@
 # Kafka Docker
 
 ## Setup
-1. Run `docker-compose up -d` to start Kafka and Zookeeper.
+1. Run `docker-compose -f docker-compose.yml -d up` to start Kafka and Zookeeper.
 
 ## Running Kafka producer-consumer
 1. Starting the Kafka producer:
@@ -20,6 +20,7 @@
 ## Usage tips
 - list running processes `docker ps`
 - stop processes `docker stop ID`
+- stop cluster `docker-compose stop`
 
 ## Source
 - Container link:
@@ -28,3 +29,5 @@
   https://github.com/bitnami/bitnami-docker-kafka
 - Kafka topic creation tutorial:
   http://cloudurable.com/blog/kafka-tutorial-kafka-from-command-line/index.html
+- Kafka Docker tutorial:
+  https://towardsdatascience.com/kafka-docker-python-408baf0e1088
