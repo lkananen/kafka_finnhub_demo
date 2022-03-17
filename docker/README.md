@@ -29,5 +29,7 @@
   https://github.com/bitnami/bitnami-docker-kafka
 - Kafka topic creation tutorial:
   http://cloudurable.com/blog/kafka-tutorial-kafka-from-command-line/index.html
+- Kafka producar-consumer example:
+  https://github.com/kadnan/Calories-Alert-Kafka
 - Kafka Docker tutorial:
   https://towardsdatascience.com/kafka-docker-python-408baf0e1088
