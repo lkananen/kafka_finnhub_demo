@@ -17,7 +17,8 @@
 3. Producer can now send messages to the consumer through Kafka.
 
 
-## Usage commands
-- list running processes `docker ps`
-- stop processes `docker stop ID`
-- stop cluster `docker-compose stop`
+## Usefull commands
+- List running containers `docker ps`
+- Stop container `docker stop <container-id>`
+- Stop cluster `docker-compose stop`
+- Add more brokers `docker-compose scale kafka=3`
