@@ -29,6 +29,7 @@ This is a sample project on Apache Kafka. Finnhub is used as a data source and t
 |        ├── test_api.py            # REST API sample script
 |        └── test_websocket.py      # Websocket sample script
 ├── .gitignore
+├── LICENCE
 ├── README.md
 └── requirements.txt                # Python requirements
 ```
