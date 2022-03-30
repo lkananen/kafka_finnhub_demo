@@ -18,6 +18,7 @@ plt.style.use("ggplot")
 
 BUFFER_SIZE = 20
 VALUE_BUFFER = collections.deque()
+TIME_BUFFER = collections.deque()
 
 
 def create_value_buffer(n_stored: int = BUFFER_SIZE):
@@ -28,11 +29,23 @@ def create_value_buffer(n_stored: int = BUFFER_SIZE):
     for i in range(BUFFER_SIZE):
         VALUE_BUFFER.append(i)
         
-    print("Buffer initialized!")
+    print("Value buffer initialized!")
+
+
+def create_time_buffer(n_stored: int = BUFFER_SIZE):
+    global TIME_BUFFER
+    TIME_BUFFER = collections.deque(maxlen=n_stored)
+    
+    # Initializes empty buffer
+    for i in range(BUFFER_SIZE):
+        TIME_BUFFER.append(i)
+        
+    print("Time buffer initialized!")
 
 
 def create_buffers():
     create_value_buffer()
+    create_time_buffer()
     
 ##############################################################################
 # Kafka consumer
@@ -60,12 +73,16 @@ def run_consumer():
         
         # Fills the new values to the buffer
         values = [val["p"] for val in json.loads(event_data)["data"]]
+        times = [val["t"] for val in json.loads(event_data)["data"]]
         for val in values:
             VALUE_BUFFER.append(val)
+        for t in times:
+            TIME_BUFFER.append(t)
             
         newest_values = list(VALUE_BUFFER)
-        print(newest_values)
-        line = plot_graph(newest_values, line=line)
+        newest_times = list(TIME_BUFFER)
+        
+        line = plot_graph(y=newest_values, x=newest_times, line=line)
         
         time.sleep(0.5)
 
@@ -81,10 +98,6 @@ def plot_graph(y,
     if not y:
         return []
     
-    # Generates x marks if not provided
-    if x == []:
-        x = [i for i in range(len(y))]
-    
     if line == []:
         plt.ion()       # interactive mode
         fig = plt.figure(figsize=(6, 3))
@@ -95,8 +108,9 @@ def plot_graph(y,
         plt.title("Title")
         plt.show()
 
-    # Updates the y-values and the axis bounds
+    # Updates the values and the axis bounds
     line.set_ydata(y)
+    line.set_xdata(x)
     if np.min(y) <= line.axes.get_ylim()[0] or np.max(y) >= line.axes.get_ylim()[1]:
         plt.ylim([
             np.min(y) - np.std(y),
