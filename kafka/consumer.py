@@ -4,6 +4,7 @@ import time
 import datetime
 import collections
 import matplotlib.pyplot as plt
+import matplotlib.dates
 import numpy as np
 
 
@@ -16,7 +17,8 @@ plt.style.use("ggplot")
 ##############################################################################
 # Buffers
 
-BUFFER_SIZE = 20
+BUFFER_SIZE = 50
+INITIAL_VALUE = 0
 VALUE_BUFFER = collections.deque()
 TIME_BUFFER = collections.deque()
 
@@ -27,7 +29,7 @@ def create_value_buffer(n_stored: int = BUFFER_SIZE):
     
     # Initializes empty buffer
     for i in range(BUFFER_SIZE):
-        VALUE_BUFFER.append(i)
+        VALUE_BUFFER.append(INITIAL_VALUE)
         
     print("Value buffer initialized!")
 
@@ -38,7 +40,7 @@ def create_time_buffer(n_stored: int = BUFFER_SIZE):
     
     # Initializes empty buffer
     for i in range(BUFFER_SIZE):
-        TIME_BUFFER.append(i)
+        TIME_BUFFER.append(INITIAL_VALUE)
         
     print("Time buffer initialized!")
 
@@ -78,9 +80,9 @@ def run_consumer():
             VALUE_BUFFER.append(val)
         for t in times:
             TIME_BUFFER.append(t)
-            
-        newest_values = list(VALUE_BUFFER)
-        newest_times = list(TIME_BUFFER)
+        
+        newest_values = [val if val != INITIAL_VALUE else values[0] for val in list(VALUE_BUFFER)]
+        newest_times = [t if t != INITIAL_VALUE else times[0] for t in list(TIME_BUFFER)]
         
         line = plot_graph(y=newest_values, x=newest_times, line=line)
         
@@ -98,25 +100,35 @@ def plot_graph(y,
     if not y:
         return []
     
+    # Obtains sorting order similar to np.argsort() and sort based on that
+    order = [i[0] for i in sorted(enumerate(x), key=lambda x: x[1])]
+    ordered_x = [x[i] for i in order]
+    ordered_y = [y[i] for i in order]
+    # ordered_x_date = [
+    #     matplotlib.dates.date2num(datetime.datetime.fromtimestamp(
+    #         float(x[i]) / 1000.0
+    #     )) for i in order]
+    
     if line == []:
         plt.ion()       # interactive mode
         fig = plt.figure(figsize=(6, 3))
         ax = fig.add_subplot(111)
         line, = ax.plot(x, y, '-o', alpha=0.8)
         
-        plt.ylabel("Y")
-        plt.title("Title")
+        plt.ylabel("value")
+        plt.xlabel("time")
+        plt.title("Real time value")
         plt.show()
 
     # Updates the values and the axis bounds
-    line.set_ydata(y)
-    line.set_xdata(x)
-    if np.min(y) <= line.axes.get_ylim()[0] or np.max(y) >= line.axes.get_ylim()[1]:
+    line.set_xdata(ordered_x)
+    line.set_ydata(ordered_y)
+    if line.axes.get_ylim()[0] <= np.percentile(y, 5) or line.axes.get_ylim()[0] >= np.percentile(y, 95):
         plt.ylim([
             np.min(y) - np.std(y),
             np.max(y) + np.std(y)
         ])
-    if np.min(x) <= line.axes.get_xlim()[0] or np.max(x) >= line.axes.get_xlim()[1]:
+    if line.axes.get_xlim()[0] <= np.percentile(x, 5) or line.axes.get_xlim()[0] >= np.percentile(x, 95):
         plt.xlim([
             np.min(x) - np.std(x),
             np.max(x) + np.std(x)
