@@ -5,17 +5,13 @@ This is a sample project on Apache Kafka. Finnhub is used as a data source and t
 <!-- ![Example graph](./imgs/sample.PNG) -->
 <img src="./imgs/sample.PNG" alt="Sample visualization" width="400" class="center">
 
-## Data flow
-The architecture consists of typical Apache Kafka consumer - producer model:
-1. Finnhub websocket API acts as a streaming data source.
-2. Producer subscribes to the API and publishes event data to a defined Kafka topic.
-3. Zookeeper handles Kafka connections through scalable brokers.
-4. Consumer subscribes to a defined topic and read the event data.
-5. As an example, a real-time visualization is produced as an output.
 
-![Data flow graph](./imgs/Kafka_data_flow.png)
+# Table of Contents
+- [Kafka Finnhub demo](#kafka-finnhub-demo)
+- [Table of Contents](#table-of-contents)
+- [Useful links](#useful-links)
 
-## Useful links
+# Useful links
 Here is a collection of additional information on the topic:
 - Kafka
   - Introduction:
