@@ -1,7 +1,7 @@
 # Kafka Docker
 
 ## Setup
-1. Run `docker-compose -f docker-compose.yml -d up` to start Kafka and Zookeeper.
+1. Run `docker-compose -f docker-compose.yml up -d` to start Kafka and Zookeeper.
 
 ## Running Kafka producer-consumer
 1. Starting the Kafka producer:
